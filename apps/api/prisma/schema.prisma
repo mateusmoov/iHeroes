@@ -1,0 +1,76 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+}
+
+model Hero {
+  id       Int                                   @id @default(autoincrement())
+  ranking  Ranking
+  name     String
+  location Unsupported("geography(Point, 4326)")
+  status   HeroStatus
+  Battle   Battle[]
+}
+
+model Occurrence {
+  id          Int                                   @id @default(autoincrement())
+  monster_id  Int
+  monster     Monster                               @relation(fields: [monster_id], references: [id])
+  dangerLevel String
+  status      OccurrenceStatus
+  location    Unsupported("geography(Point, 4326)")
+  Battle      Battle[]
+}
+
+model Battle {
+  occurrences_id    Int
+  occurrences       Occurrence @relation(fields: [occurrences_id], references: [id])
+  hero_id           Int
+  hero              Hero       @relation(fields: [hero_id], references: [id])
+  battle_started_at DateTime
+  battle_ended_at   DateTime
+
+  @@id([occurrences_id, hero_id])
+}
+
+model Monster {
+  id          Int          @id @default(autoincrement())
+  name        String
+  image_url   String
+  description String
+  Occurrence  Occurrence[]
+}
+
+enum Ranking {
+  S
+  A
+  B
+  C
+}
+
+enum HeroStatus {
+  available
+  in_transit
+  fighting
+  getting_back
+}
+
+enum OccurrenceStatus {
+  waiting
+  fighting
+  defeated
+}
