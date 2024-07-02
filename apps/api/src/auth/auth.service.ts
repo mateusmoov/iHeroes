@@ -3,7 +3,7 @@ import { UserService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-interface IPayload {
+interface IPayloadUser {
   email: string;
   password: string;
 }
@@ -28,7 +28,7 @@ export class AuthService {
     return result;
   }
 
-  async validate(payload: IPayload) {
+  async validate(payload: IPayloadUser) {
     const user = await this.validateUser(payload.email, payload.password);
     if (!user) {
       throw new UnauthorizedException();
@@ -36,7 +36,7 @@ export class AuthService {
     return { name: user.name };
   }
 
-  async login(payload: IPayload) {
+  async login(payload: IPayloadUser) {
     const userInfo = await this.validate(payload);
     return {
       access_token: this.jwtService.sign(userInfo),
