@@ -9,6 +9,6 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: zrp-challenge
+      POSTGRES_DB: iHeroes
 volumes:
   db_data:

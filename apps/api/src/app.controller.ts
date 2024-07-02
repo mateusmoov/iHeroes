@@ -7,7 +7,6 @@ import {
   Body,
 } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
-import { LocalAuthGuard } from './auth/local-auth.guard';
 import { JwtAuthGuard } from './auth/jwt.auth.guard';
 import { UserService } from './users/users.service';
 import { User as UserModel } from '@prisma/client';
@@ -19,10 +18,9 @@ export class AppController {
     private userService: UserService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    return this.authService.login(req.user);
+    return this.authService.login(req.body);
   }
 
   @UseGuards(JwtAuthGuard)
