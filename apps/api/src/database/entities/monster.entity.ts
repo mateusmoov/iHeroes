@@ -15,6 +15,9 @@ export class Monster {
   @Column()
   description: string;
 
+  @Column()
+  danger_level: string;
+
   @OneToMany(() => Occurrence, (occurrence) => occurrence.monster)
   occurrences: Occurrence[];
 }

@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Monster } from './monster.entity';
 import { Battle } from './battle.entity';
+import { Point } from 'typeorm';
 
 enum OccurrenceStatus {
   waiting = 'waiting',
@@ -25,14 +26,15 @@ export class Occurrence {
   @Column()
   monster_id: number;
 
-  @Column()
-  dangerLevel: string;
-
-  @Column({ type: 'enum', enum: OccurrenceStatus })
+  @Column({
+    type: 'enum',
+    enum: OccurrenceStatus,
+    default: OccurrenceStatus.waiting,
+  })
   status: OccurrenceStatus;
 
   @Column({ type: 'geography', spatialFeatureType: 'Point', srid: 4326 })
-  location: string;
+  location: Point;
 
   @OneToMany(() => Battle, (battle) => battle.occurrence)
   battles: Battle[];

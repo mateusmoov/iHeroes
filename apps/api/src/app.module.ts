@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { HeroesController } from './heroes/heroes.controller';
 import { HeroesModule } from './heroes/heroes.module';
+import { OccurrencesModule } from './occurrences/occurrences.module';
+import { OccurrencesService } from './occurrences/occurrences.service';
+import { SocketIoClient } from './services/socketio.client';
 
 @Module({
   imports: [
@@ -22,8 +25,9 @@ import { HeroesModule } from './heroes/heroes.module';
     }),
     UsersModule,
     HeroesModule,
+    OccurrencesModule,
   ],
   controllers: [AppController, HeroesController],
-  providers: [AppService],
+  providers: [AppService, SocketIoClient],
 })
 export class AppModule {}
