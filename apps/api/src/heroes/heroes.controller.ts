@@ -10,6 +10,7 @@ import {
 import { HeroesService } from './heroes.service';
 import { UpdateHeroDto } from './dto/update-hero.dto';
 import { Hero } from 'src/database/entities/hero.entity';
+import { Paginate, PaginateQuery, Paginated } from 'nestjs-paginate';
 
 @Controller('heroes')
 export class HeroesController {
@@ -17,12 +18,12 @@ export class HeroesController {
 
   @Post()
   create(@Body() createHeroDto: Hero) {
-    return this.heroesService.createHero(createHeroDto);
+    return this.heroesService.create(createHeroDto);
   }
 
   @Get()
-  findAll() {
-    return this.heroesService.findAll();
+  findAll(@Paginate() query: PaginateQuery): Promise<Paginated<Hero>> {
+    return this.heroesService.findAll(query);
   }
 
   @Get(':id')
