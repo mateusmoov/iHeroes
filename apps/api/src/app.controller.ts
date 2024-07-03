@@ -8,14 +8,14 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt.auth.guard';
-import { UserService } from './users/users.service';
-import { User as UserModel } from '@prisma/client';
+import { UsersService } from './users/users.service';
+import { User } from './database/entities/user.entity';
 
 @Controller()
 export class AppController {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
+    private usersService: UsersService,
   ) {}
 
   @Post('auth/login')
@@ -32,7 +32,7 @@ export class AppController {
   @Post('register')
   async signUp(
     @Body() userData: { name: string; email: string; password: string },
-  ): Promise<UserModel> {
-    return this.userService.createUser(userData);
+  ): Promise<User> {
+    return this.usersService.createUser(userData);
   }
 }
