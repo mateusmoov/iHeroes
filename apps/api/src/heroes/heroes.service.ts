@@ -1,53 +1,80 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { UpdateHeroDto } from './dto/update-hero.dto';
+import { CreateHeroDto } from './dto/create-hero.dto';
 import { Hero } from 'src/database/entities/hero.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import {
-  FilterOperator,
-  FilterSuffix,
-  Paginate,
-  PaginateQuery,
-  paginate,
-  Paginated,
-} from 'nestjs-paginate';
+import { DeepPartial, Repository } from 'typeorm';
+import { PaginateQuery, paginate, Paginated } from 'nestjs-paginate';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class HeroesService {
+  private readonly logger = new Logger(HeroesService.name);
+
   constructor(
     @InjectRepository(Hero)
     private heroesRepository: Repository<Hero>,
   ) {}
-  async create(heroData: Hero): Promise<Hero> {
-    const { name, ranking, location } = heroData;
 
-    const newHero = this.heroesRepository.create({
-      name,
-      ranking,
-      location,
-    });
-
-    return this.heroesRepository.save(newHero);
+  async create(createHeroDto: CreateHeroDto): Promise<Hero> {
+    try {
+      const newHero = this.heroesRepository.create(
+        createHeroDto as DeepPartial<Hero>,
+      );
+      return await this.heroesRepository.save(newHero);
+    } catch (error) {
+      this.logger.error('Error creating hero', error.stack);
+      throw new InternalServerErrorException('Failed to create hero');
+    }
   }
 
-  findAll(query: PaginateQuery): Promise<Paginated<Hero>> {
-    return paginate(query, this.heroesRepository, {
-      sortableColumns: ['id', 'name', 'ranking'],
-      nullSort: 'last',
-      defaultSortBy: [['ranking', 'DESC']],
-      searchableColumns: ['name'],
-    });
+  async findAll(query: PaginateQuery): Promise<Paginated<Hero>> {
+    try {
+      return paginate(query, this.heroesRepository, {
+        sortableColumns: ['id', 'name', 'ranking'],
+        nullSort: 'last',
+        defaultSortBy: [['ranking', 'DESC']],
+        searchableColumns: ['name'],
+      });
+    } catch (error) {
+      this.logger.error('Error finding all heroes', error.stack);
+      throw new InternalServerErrorException('Failed to fetch heroes');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hero`;
+  async update(id: number, updateHeroDto: UpdateHeroDto): Promise<Hero> {
+    const hero = await this.findById(id);
+
+    Object.assign(hero, updateHeroDto);
+
+    try {
+      return await this.heroesRepository.save(hero);
+    } catch (error) {
+      this.logger.error(`Error updating hero with id ${id}`, error.stack);
+      throw new InternalServerErrorException('Failed to update hero');
+    }
   }
 
-  update(id: number, updateHeroDto: UpdateHeroDto) {
-    return `This action updates a #${id} hero`;
+  async findById(id: number): Promise<Hero> {
+    try {
+      return await this.heroesRepository.findOneOrFail({ where: { id } });
+    } catch (error) {
+      this.logger.error(`Hero with id ${id} not found`, error.stack);
+      throw new NotFoundException(`Hero with id ${id} not found`);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} hero`;
+  async remove(id: number): Promise<void> {
+    const hero = await this.findById(id);
+    try {
+      await this.heroesRepository.remove(hero);
+    } catch (error) {
+      this.logger.error(`Error removing hero with id ${id}`, error.stack);
+      throw new InternalServerErrorException('Failed to remove hero');
+    }
   }
 }

@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Point,
+} from 'typeorm';
 import { Battle } from './battle.entity';
 
 enum HeroStatus {
@@ -27,7 +33,7 @@ export class Hero {
   name: string;
 
   @Column({ type: 'geography', spatialFeatureType: 'Point', srid: 4326 })
-  location: string;
+  location: Point;
 
   @Column({ type: 'enum', enum: HeroStatus, default: HeroStatus.available })
   status: HeroStatus;

@@ -28,7 +28,7 @@ export class HeroesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.heroesService.findOne(+id);
+    return this.heroesService.findById(+id);
   }
 
   @Patch(':id')
