@@ -16,9 +16,9 @@ export class Battle {
   @ManyToOne(() => Hero, (hero) => hero.battles)
   hero: Hero;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   battle_started_at: Date;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   battle_ended_at: Date;
 }

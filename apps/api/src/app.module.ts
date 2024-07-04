@@ -7,8 +7,8 @@ import { UsersModule } from './users/users.module';
 import { HeroesController } from './heroes/heroes.controller';
 import { HeroesModule } from './heroes/heroes.module';
 import { OccurrencesModule } from './occurrences/occurrences.module';
-import { OccurrencesService } from './occurrences/occurrences.service';
 import { SocketIoClient } from './services/socketio.client';
+import { BattlesModule } from './battles/battles.module';
 
 @Module({
   imports: [
@@ -21,11 +21,12 @@ import { SocketIoClient } from './services/socketio.client';
       password: 'password',
       database: 'iHeroes',
       entities: [__dirname + '/database/entities/**'],
-      synchronize: true,
+      synchronize: false,
     }),
     UsersModule,
     HeroesModule,
     OccurrencesModule,
+    BattlesModule,
   ],
   controllers: [AppController, HeroesController],
   providers: [AppService, SocketIoClient],

@@ -5,7 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Occurrence } from 'src/database/entities/occurrence.entity';
 import { Point, Repository } from 'typeorm';
 import { Monster } from 'src/database/entities/monster.entity';
-
+import { HeroesService } from 'src/heroes/heroes.service';
+import { BattlesService } from 'src/battles/battles.service';
 @Injectable()
 export class OccurrencesService {
   constructor(
@@ -13,6 +14,8 @@ export class OccurrencesService {
     private occurrencesRepository: Repository<Occurrence>,
     @InjectRepository(Monster)
     private monstersRepository: Repository<Monster>,
+    private heroesService: HeroesService,
+    private battlesService: BattlesService,
   ) {}
 
   async create(createOccurrenceDto: CreateOccurrenceDto) {
@@ -28,6 +31,11 @@ export class OccurrencesService {
         existingMonster.id,
         location,
       );
+
+      const nearestHero = await this.heroesService.findNearestHero(location);
+
+      await this.battlesService.create(newOccurrence.id, nearestHero.id);
+
       return newOccurrence;
     } catch (error) {
       console.error(error);

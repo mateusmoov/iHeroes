@@ -7,7 +7,7 @@ import { UpdateHeroDto } from './dto/update-hero.dto';
 import { CreateHeroDto } from './dto/create-hero.dto';
 import { Hero } from 'src/database/entities/hero.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, Point, Repository } from 'typeorm';
 import { PaginateQuery, paginate, Paginated } from 'nestjs-paginate';
 import { Logger } from '@nestjs/common';
 
@@ -66,6 +66,24 @@ export class HeroesService {
       this.logger.error(`Hero with id ${id} not found`, error.stack);
       throw new NotFoundException(`Hero with id ${id} not found`);
     }
+  }
+
+  async findNearestHero(location: Point): Promise<Hero | null> {
+    const nearestHero = await this.heroesRepository
+      .createQueryBuilder('hero')
+      .select('hero')
+      .addSelect(
+        'ST_Distance(hero.location, ST_SetSRID(ST_MakePoint(:lng, :lat), 4326))',
+        'distance',
+      )
+      .orderBy('distance', 'ASC')
+      .setParameters({
+        lng: location[0].lat,
+        lat: location[0].lng,
+      })
+      .getOne();
+
+    return nearestHero;
   }
 
   async remove(id: number): Promise<void> {
