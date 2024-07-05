@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateOccurrenceDto } from './dto/create-occurrence.dto';
 import { UpdateOccurrenceDto } from './dto/update-occurrence.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -39,7 +39,7 @@ export class OccurrencesService {
       return newOccurrence;
     } catch (error) {
       console.error(error);
-      throw new NotFoundException(`Monster with name ${monsterName} not found`);
+      throw new InternalServerErrorException('Something went wrong');
     }
   }
 
