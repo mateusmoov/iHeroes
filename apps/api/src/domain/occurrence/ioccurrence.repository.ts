@@ -1,5 +1,5 @@
 import { Occurrence } from './occurrence';
 
 export interface IOccurrenceRepository {
-  createOccurrence(data: Partial<Occurrence>): Promise<Occurrence>;
+  CreateOccurrence(data: Partial<Occurrence>): Promise<Occurrence>;
 }

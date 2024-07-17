@@ -1,5 +1,5 @@
 import { Point } from 'typeorm';
-import { Battle } from 'src/persistence/hero/battle.entity';
+import { Battle } from 'src/persistence/battle/battle.entity';
 
 export enum HeroStatus {
   available = 'available',
@@ -19,7 +19,7 @@ export type Hero = {
   id: number;
   ranking: Ranking;
   name: string;
-  location: Point; 
+  location: Point;
   status: HeroStatus;
   battles: Battle[];
 };

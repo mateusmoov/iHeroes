@@ -10,12 +10,12 @@ export class OccurrenceRepository {
     private occurrenceRepository: Repository<Occurrence>,
   ) {}
 
-  async createOccurrence(monsterId: number, location: Point) {
+  async createOccurrence(data: Partial<Occurrence>) {
     const newOccurrence = this.occurrenceRepository.create({
-      monster_id: monsterId,
+      monster_id: data.monster_id,
       location: {
         type: 'Point',
-        coordinates: [location[0].lng, location[0].lat],
+        coordinates: [data.location[0].lng, data.location[0].lat],
       },
     });
 

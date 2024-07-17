@@ -6,8 +6,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Point } from 'typeorm';
-import { Monster } from '../hero/monster.entity';
-import { Battle } from '../hero/battle.entity';
+import { Monster } from '../monster/monster.entity';
+import { Battle } from '../battle/battle.entity';
 
 enum OccurrenceStatus {
   waiting = 'waiting',

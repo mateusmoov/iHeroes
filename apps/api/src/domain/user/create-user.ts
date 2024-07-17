@@ -6,14 +6,12 @@ const UserRepo = () => Inject('UserRepo');
 
 @Injectable()
 export class createUser {
-  constructor(
-    @UserRepo() private readonly userRepository: IUserRepository,
-  ) { }
+  constructor(@UserRepo() private readonly userRepository: IUserRepository) {}
 
   public async createUser(data: Partial<User>): Promise<HttpStatus> {
     // hash here
     await this.userRepository.createUser(data);
 
-    return HttpStatus.OK
+    return HttpStatus.OK;
   }
 }

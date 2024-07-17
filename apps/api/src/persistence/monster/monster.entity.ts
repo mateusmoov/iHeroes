@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Occurrence } from './occurrence.entity';
+import { Occurrence } from '../occurrence/occurrence.entity';
 
 @Entity()
 export class Monster {

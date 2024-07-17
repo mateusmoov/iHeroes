@@ -5,8 +5,8 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { Monster } from './monster.entity';
-import { Battle } from './battle.entity';
+import { Monster } from '../monster/monster.entity';
+import { Battle } from '../battle/battle.entity';
 import { Point } from 'typeorm';
 
 enum OccurrenceStatus {

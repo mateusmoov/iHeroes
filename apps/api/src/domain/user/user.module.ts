@@ -3,10 +3,8 @@ import { createUser } from './create-user';
 import { UserRepositoryModule } from 'src/persistence/user/user.repository.module';
 
 @Module({
-  imports: [
-    UserRepositoryModule,
-  ],
+  imports: [UserRepositoryModule],
   providers: [createUser],
   exports: [createUser],
 })
-export class UserModule { }
+export class UserModule {}

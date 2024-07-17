@@ -1,1 +1,1 @@
-export { createOccurrence } from './create-occurrence';
+export { CreateOccurrence } from './create-occurrence';

@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Occurrence } from './occurrence.entity';
-import { Hero } from './hero.entity';
+import { Occurrence } from '../occurrence/occurrence.entity';
+import { Hero } from '../hero/hero.entity';
 
 @Entity()
 export class Battle {

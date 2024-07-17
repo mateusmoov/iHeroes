@@ -8,4 +8,4 @@ import { OccurenceProvider } from './occurrence.provider';
   providers: [OccurenceProvider],
   exports: [OccurenceProvider],
 })
-export class UserRepositoryModule {}
+export class OccurrenceRepositoryModule {}

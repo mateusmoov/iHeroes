@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IHeroRepository } from '../ihero.repository';
-import { Hero } from '../hero';
 
 const HeroRepo = () => Inject('HeroRepo');
 

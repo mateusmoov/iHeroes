@@ -5,7 +5,7 @@ import {
   OneToMany,
   Point,
 } from 'typeorm';
-import { Battle } from './battle.entity';
+import { Battle } from '../battle/battle.entity';
 
 enum HeroStatus {
   available = 'available',

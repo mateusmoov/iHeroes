@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { HeroRepositoryModule } from 'src/persistence/hero/hero.repository.module';
-import { createOccurrence } from './services';
+import { OccurrenceRepositoryModule } from 'src/persistence/occurrence/occurrence.repository.module';
+import { CreateOccurrence } from './services';
 
 @Module({
-  imports: [HeroRepositoryModule],
-  providers: [createOccurrence],
-  exports: [createOccurrence],
+  imports: [OccurrenceRepositoryModule],
+  providers: [CreateOccurrence],
+  exports: [CreateOccurrence],
 })
-export class HeroModule {}
+export class OccurrenceModule {}
